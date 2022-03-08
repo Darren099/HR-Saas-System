@@ -40,3 +40,15 @@ export function addEmployee(data) {
     data
   })
 }
+
+/** *
+ *  封装一个导入员工的接口  参数data是一个数组类型
+ *
+ * ***/
+export function importEmployee(data) {
+  return request({
+    url: '/sys/user/batch',
+    method: 'post',
+    data
+  })
+}
