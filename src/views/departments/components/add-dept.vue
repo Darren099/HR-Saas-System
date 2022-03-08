@@ -64,7 +64,6 @@ export default {
         // 没id就是新增模式
         isRepeat = depts.filter(item => item.pid === this.treeNode.id).some(item => item.name === value)
       }
-
       isRepeat ? callback(new Error(`同级部门下已经有${value}的部门了`)) : callback()
     }
     // 检查编码重复
@@ -80,7 +79,6 @@ export default {
         // 新增模式
         isRepeat = depts.some(item => item.code === value && value) // 这里加一个 value不为空 因为我们的部门有可能没有code
       }
-
       isRepeat ? callback(new Error(`组织架构中已经有部门使用${value}编码`)) : callback()
     }
     return {
