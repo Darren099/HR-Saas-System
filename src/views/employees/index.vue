@@ -10,6 +10,7 @@
             icon="plus"
             type="primary"
             size="small"
+            :disabled="!checkPermission('POINT-USER-ADD')"
             @click="showDialog = true"
           >新增员工</el-button>
         </template>
@@ -53,11 +54,11 @@
           </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
             <template #default="{ row }">
-              <el-button type="text" size="small" @click="$router.push(`/employees/detail/${row.id}`)">查看</el-button>
+              <el-button type="text" size="small" :disabled="!checkPermission('POINT-USER-UPDATE')" @click="$router.push(`/employees/detail/${row.id}`)">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button type="text" size="small" @click="editRole(row.id)">角色</el-button>
               <el-button type="text" size="small" @click="deleteEmployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -82,7 +83,8 @@
         <canvas ref="myCanvas" />
       </el-row>
     </el-dialog>
-
+    <!-- 放置角色分配参数 -->
+    <AssignRole ref="assignRole" :show-role-dialog.sync="showRoleDialog" :user-id="userId" />
   </div>
 </template>
 
@@ -92,10 +94,12 @@ import EmployeeEnum from '@/api/constant/employees' // 引入员工的枚举对�
 import AddDemployee from './components/add-employee' // 引入弹出层
 import { formatDate } from '@/filters/' // 格式化时间组件
 import QrCode from 'qrcode' // 引入二维码组件
+import AssignRole from './components/assign-role.vue'
 
 export default {
   components: {
-    AddDemployee
+    AddDemployee,
+    AssignRole
   },
   data() {
     return {
@@ -107,7 +111,9 @@ export default {
         total: 0 // 总数
       },
       showDialog: false, // 默认关闭弹层
-      showCodeDialog: false
+      showCodeDialog: false,
+      showRoleDialog: false, // 显示角色分配的弹层
+      userId: null // 定义一个要给assignRole的userId
     }
   },
   created() {
@@ -209,6 +215,13 @@ export default {
       } else {
         this.$message.warning('该用户还未上传头像')
       }
+    },
+    // 编辑员工角色的方法
+    async editRole(id) {
+      // 弹出层
+      this.userId = id // props传值 是异步的
+      await this.$refs.assignRole.getUserDetailById(id) // 父组件调用子组件方法
+      this.showRoleDialog = true
     }
   }
 }

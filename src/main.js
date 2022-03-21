@@ -15,6 +15,7 @@ import Component from '@/components'
 
 import * as directives from '@/directives'// 注册自定义指令
 import * as filters from '@/filters' // 引入过滤器
+import checkPermission from './mixin/checkPermission'
 
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -38,6 +39,9 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.use(Component) // 注册自己的插件
+
+// 全局混入检查对象
+Vue.mixin(checkPermission) // 表示所有的组件都拥有了一个检查的方法
 
 Vue.config.productionTip = false
 

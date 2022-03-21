@@ -18,10 +18,19 @@ router.beforeEach(async function(to, from, next) {
       if (!store.getters.userId) {
         // 页面不需要每一次访问都调用，通过用户资料接口返回值里面的userId来判断当前有没有用户的资料
         // 如果没有id这个值 才会调用 vuex的获取资料的action
-        await store.dispatch('user/getUserInfo')
+        // async函数return的内容使用await可以接受
+        const { roles } = await store.dispatch('user/getUserInfo')
         // 写await是因为我们想获取完资料再去放行
+        // routes就是筛选得到的动态路由
+        const routes = await store.dispatch('permission/filterRoutes', roles.menus)// 筛选用户可用的动态路由
+        // 把动态路由添加到路由表中
+        // 404 page must be placed at the end !!!
+        router.addRoutes([...routes, { path: '*', redirect: '/404', hidden: true }]) // 添加动态路由到路由表
+        // addRoutes 之后必须用next(地址)，不能用next()
+        next(to.path) // 相当于跳到对应的地址  相当于多做一次跳转
+      } else {
+        next() // 直接放行
       }
-      next() // 直接放行
     }
   } else {
     // 如果没有token

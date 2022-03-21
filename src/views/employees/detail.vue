@@ -28,7 +28,6 @@
             </el-row>
             <!-- <UserInfo /> -->
             <!-- 使用动态组件  可以切换组件 -->
-
             <component :is="UserComponent" />
           </el-tab-pane>
 

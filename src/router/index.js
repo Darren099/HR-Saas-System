@@ -10,6 +10,7 @@ import attendancesRouter from './modules/attendances'
 import salarysRouter from './modules/salarys'
 import settingRouter from './modules/setting'
 import socialRouter from './modules/social'
+import userRouter from './modules/user.js'
 
 Vue.use(Router)
 
@@ -73,8 +74,7 @@ export const constantRoutes = [
       component: () => import('@/views/import')
     }]
   },
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  userRouter // 放一个都可以访问的路由
 ]
 
 // 动态路由
@@ -92,7 +92,8 @@ export const asyncRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes, ...asyncRoutes] // 临时合并所有的路由
+  // routes: [...constantRoutes, ...asyncRoutes] // 临时合并所有的路由,因为接口所有人都可以改，改没了就得合并才能看见页面
+  routes: [...constantRoutes] // 把动态路由删除
 })
 
 const router = createRouter()
