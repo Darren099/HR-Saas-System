@@ -170,7 +170,7 @@ export default {
   },
   data() {
     return {
-      defaultImg: require('@/assets/common/head.jpg'),
+      defaultImg: require('@/assets/common/QQ截图20220301155101.png'),
       showDialog: false,
       ruleForm: {
         // 时间
