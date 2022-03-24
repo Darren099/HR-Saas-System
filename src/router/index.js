@@ -90,8 +90,9 @@ export const asyncRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  mode: 'history', // require service support
+  base: '/hr/', // 配置默认前缀地址
+  scrollBehavior: () => ({ y: 0 }), // 管理滚动行为 出现滚动 切换就让页面回到顶部
   // routes: [...constantRoutes, ...asyncRoutes] // 临时合并所有的路由,因为接口所有人都可以改，改没了就得合并才能看见页面
   routes: [...constantRoutes] // 把动态路由删除
 })
